@@ -17,7 +17,7 @@ Submit login form
     ...    Wait For New Window Open    AND
     ...    Click Element    css=button[type="submit"]
     Switch Window    NEW
-    Wait Until Page Contains    Login succeeded
+    Wait Until Page Contains    Login succeededdddd
     
 Submit register form
     Open browser to test page    http://127.0.0.1:7272/register-form-example.html
