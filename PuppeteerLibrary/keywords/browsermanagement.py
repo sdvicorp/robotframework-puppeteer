@@ -12,6 +12,15 @@ class BrowserManagementKeywords(LibraryComponent):
         return self.ctx.get_current_library_context().get_async_keyword_group(type(self).__name__)
 
     @keyword
+    def connect_browser(self, url, alias=None, options=None):
+        """only works with Chrome / Chromium"""
+        library_context = self.ctx.create_library_context(alias, "chrome")
+        self.loop.run_until_complete(library_context.connect_server(url, options))
+
+#        inquiry = Inquiry()
+#        f = await inquiry.getWsEndpoint()
+
+    @keyword
     def open_browser(self, url, browser="chrome", alias=None, options=None):
         """Opens a new browser instance to the specific ``url``.
 

@@ -1,6 +1,7 @@
 import sys
 from pyppeteer import launch
 from pyppeteer.browser import Browser
+from pyppeteer.launcher import connect
 from PuppeteerLibrary.custom_elements.base_page import BasePage
 from PuppeteerLibrary.library_context.ilibrary_context import iLibraryContext
 from PuppeteerLibrary.puppeteer.async_keywords.puppeteer_alert import PuppeteerAlert
@@ -68,11 +69,25 @@ class PuppeteerContext(iLibraryContext):
     async def stop_server(self):
         await self.browser.close()
         self._reset_context()
-    
+
     def is_server_started(self) -> bool:
         if self.browser is not None:
             return True
         return False
+
+    async def connect_server(self, target, options: dict=None):
+        launchOpts = {
+            'browserWSEndpoint': target
+        }
+        self.browser = await connect(launchOpts)
+        client = self.browser._connection
+        await client.send('Console.enable')
+        await client.send('Runtime.enable')
+        await client.send('Log.enable')
+        await client.send('Runtime.runIfWaitingForDebugger')
+        await client.send('Page.enable')
+        pages = await self.browser.pages()
+        self.set_current_page(pages[0])
 
     async def create_new_page(self, options: dict=None) -> BasePage:
         new_page = await self.browser.newPage()
@@ -96,7 +111,7 @@ class PuppeteerContext(iLibraryContext):
 
     async def close_browser_context(self):
         await self.browser.close()
-    
+
     async def close_window(self):
         await self.get_current_page().get_page().close()
         pages = await self.get_all_pages()
