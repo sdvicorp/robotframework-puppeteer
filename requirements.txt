@@ -1,6 +1,6 @@
 versioneer>=0.18
 robotframework>=3.2.1
-git+https://github.com/sdvicorp/pyppeteer.git@tongfa/cep-poc
 playwright==0.152.0
+git+https://github.com/sdvicorp/pyppeteer.git@tongfa/cep-poc
 # pyppeteer>=0.2.2
 robotframework-libdoc2json>=0.4
