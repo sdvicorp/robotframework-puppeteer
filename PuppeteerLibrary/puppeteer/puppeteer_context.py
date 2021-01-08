@@ -13,6 +13,7 @@ from PuppeteerLibrary.puppeteer.async_keywords.puppeteer_dropdown import Puppete
 from PuppeteerLibrary.puppeteer.async_keywords.puppeteer_element import PuppeteerElement
 from PuppeteerLibrary.puppeteer.async_keywords.puppeteer_formelement import PuppeteerFormElement
 from PuppeteerLibrary.puppeteer.async_keywords.puppeteer_mouseevent import PuppeteerMouseEvent
+from PuppeteerLibrary.puppeteer.async_keywords.puppeteer_panel import PuppeteerPanel
 from PuppeteerLibrary.puppeteer.custom_elements.puppeteer_page import PuppeteerPage
 from PuppeteerLibrary.puppeteer.async_keywords.puppeteer_pdf import PuppeteerPDF
 from PuppeteerLibrary.puppeteer.async_keywords.puppeteer_javascript import PuppeteerJavascript
@@ -128,6 +129,7 @@ class PuppeteerContext(iLibraryContext):
             "JavascriptKeywords": PuppeteerJavascript(self),
             "MockResponseKeywords": PuppeteerMockResponse(self),
             "MouseEventKeywords": PuppeteerMouseEvent(self),
+            "PanelKeywords": PuppeteerPanel(self),
             "PDFKeywords": PuppeteerPDF(self),
             "ScreenshotKeywords": PuppeteerScreenshot(self),
             "WaitingKeywords": PuppeteerWaiting(self)
