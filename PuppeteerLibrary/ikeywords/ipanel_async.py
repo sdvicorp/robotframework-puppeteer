@@ -7,6 +7,6 @@ class iPanelAsync(BaseAsyncKeywords, ABC):
     ##############################
     # Query Element
     ##############################
- #   @abstractmethod
-#    async def find_elements(self, locator: str):
-#        pass
+    @abstractmethod
+    async def find_elements2(self, locator: str):
+        pass
