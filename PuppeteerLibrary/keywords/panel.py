@@ -15,7 +15,7 @@ class PanelKeywords(LibraryComponent):
     # Action
     ##############################
     @keyword
-    def browse_to_access_settings(self, locator):
+    def browse_to_access_settings(self):
         """Clicks element identified by ``locator``.
 
         The ``noWaitAfter`` argument specifies skip wait for animation after click.
@@ -26,6 +26,4 @@ class PanelKeywords(LibraryComponent):
         | `Click Element`         | id:register          |            |
         | `Click Element`         | id:register          | ${True}    |
         """
-        self.loop.run_until_complete(self.get_async_keyword_group().browse_to_access_settings(
-            locator=locator
-        ))
+        self.loop.run_until_complete(self.get_async_keyword_group().browse_to_access_settings())
