@@ -28,4 +28,4 @@ class PuppeteerPanel(iPanelAsync):
             element = await self.library_ctx.get_current_page().querySelector_with_selenium_locator(self.settingsPageButton)
             await element.click()
         finally:
-            await self.library_ctx.get_async_keyword_group().wait_until_page_contains('Rally Settings')
+            await self.library_ctx.get_async_keyword_group('WaitingKeywords').wait_until_page_contains('Rally Settings')
