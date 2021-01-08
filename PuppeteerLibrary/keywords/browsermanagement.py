@@ -14,7 +14,9 @@ class BrowserManagementKeywords(LibraryComponent):
     @keyword
     def connect_browser(self, url, alias=None, options=None):
         """only works with Chrome / Chromium"""
+        print('Create library context')
         library_context = self.ctx.create_library_context(alias, "chrome")
+        print('connect to server')
         self.loop.run_until_complete(library_context.connect_server(url, options))
 
 #        inquiry = Inquiry()
