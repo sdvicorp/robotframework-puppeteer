@@ -8,5 +8,5 @@ class iPanelAsync(BaseAsyncKeywords, ABC):
     # Query Element
     ##############################
     @abstractmethod
-    async def find_elements2(self, locator: str):
+    async def click_element_too(self, locator: str, noWaitAfter: str='False'):
         pass

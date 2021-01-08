@@ -12,6 +12,6 @@ class PuppeteerPanel(iPanelAsync):
     ##############################
     # Click
     ##############################
-#    async def click_element(self, locator: str, noWaitAfter: str='False'):
-#        element = await self.library_ctx.get_current_page().querySelector_with_selenium_locator(locator)
-#        await element.click()
+    async def click_element_too(self, locator: str, noWaitAfter: str='False'):
+        element = await self.library_ctx.get_current_page().querySelector_with_selenium_locator(locator)
+        await element.click()
