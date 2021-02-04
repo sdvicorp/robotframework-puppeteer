@@ -40,7 +40,8 @@ setup(
     install_requires=[
         'robotframework>=3.2.1',
         'playwright>=0.152.0',
-        'pyppeteer>=0.2.2',
+        'git+https://github.com/sdvicorp/pyppeteer.git@kurt/cep-poc'
+#        'pyppeteer>=0.2.2',
     ],
     # python_requires='>3.5',
     # test_suite='nose.collector',

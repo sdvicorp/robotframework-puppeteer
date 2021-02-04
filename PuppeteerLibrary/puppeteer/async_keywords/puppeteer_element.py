@@ -73,7 +73,7 @@ class PuppeteerElement(iElementAsync):
         try:
             return await self.library_ctx.get_current_page().waitForSelector_with_selenium_locator(locator, 0.1, visible=True, hidden=False)
         except:
-            raise AssertionError("Element '%s' is not be visible. " % locator)
+            raise AssertionError("Element '%s' is not visible. " % locator)
     
     async def element_should_not_be_visible(self, locator:str):
         try:
@@ -96,7 +96,7 @@ class PuppeteerElement(iElementAsync):
         element = await self.library_ctx.get_current_page().querySelector_with_selenium_locator(locator)
         return (await (await element.getProperty('textContent')).jsonValue())
 
-    async def get_attribute(self, locator: str, attribute: str) -> str:
+    async def get_property(self, locator: str, attribute: str) -> str:
         element = await self.library_ctx.get_current_page().querySelector_with_selenium_locator(locator)
         return (await (await element.getProperty(attribute)).jsonValue())
         

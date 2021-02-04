@@ -77,7 +77,7 @@ class iElementAsync(BaseAsyncKeywords, ABC):
         pass
 
     @abstractmethod
-    async def get_attribute(self, locator: str, attribute: str) -> str:
+    async def get_property(self, locator: str, attribute: str) -> str:
         pass
     
     @abstractmethod
