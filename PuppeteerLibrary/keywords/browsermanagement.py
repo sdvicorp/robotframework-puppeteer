@@ -17,6 +17,7 @@ class BrowserManagementKeywords(LibraryComponent):
         print('Create library context')
         library_context = self.ctx.create_library_context(alias, "chrome")
         print('connect to server')
+        options.update({'defaultViewport': None})
         self.loop.run_until_complete(library_context.connect_server(url, options))
 
 #        inquiry = Inquiry()

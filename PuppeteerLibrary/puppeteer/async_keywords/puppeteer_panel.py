@@ -31,6 +31,9 @@ class PuppeteerPanel(iPanelAsync):
     workordersTableJob = "css:[testtag='workorders-table-job']"
 
     metadataQcEventCategory = "css:[testtag='qc-category']"
+    metadataQcEventFormSave = "css:[testtag='event-form-save']"
+    metadataQcEventFormCancel = 'css:[testtag="event-form-cancel"]'
+    metadataQcEventFormField = 'css:[testtag="event-form-field"]'
     workorderMetadataButton = "css:[testtag='workorder-metadata']"
     workorderSaveButton = "css:[testtag='workorder-save']"
 
@@ -65,7 +68,7 @@ class PuppeteerPanel(iPanelAsync):
 
     async def get_access_api_token(self):
         await self.library_ctx.get_async_keyword_group('ElementKeywords').element_should_be_visible(self.settingsAuthRadioGroup)
-        return await self.library_ctx.get_async_keyword_group('ElementKeywords').get_value(self.settingsApiToken)
+        return await self.library_ctx.get_async_keyword_group('ElementKeywords').get_property(self.settingsApiToken, 'value')
 
     async def set_access_authentication_method(self, authtype: str = 'token', token: str = None):
         assert authtype in ('token', 'okta')
@@ -78,12 +81,12 @@ class PuppeteerPanel(iPanelAsync):
 
     async def get_access_api_hostname(self):
         await self.library_ctx.get_async_keyword_group('ElementKeywords').element_should_be_visible(self.settingsApiHostname)
-        return await self.library_ctx.get_async_keyword_group('ElementKeywords').get_value(self.settingsApiHostname)
+        return await self.library_ctx.get_async_keyword_group('ElementKeywords').get_property(self.settingsApiHostname, 'value')
 
     async def set_access_api_hostname(self, hostname: str):
         await self.library_ctx.get_async_keyword_group('ElementKeywords').element_should_be_visible(self.settingsApiHostname)
         await self.library_ctx.get_async_keyword_group('FormElementKeywords').input_text(self.settingsApiHostname, hostname)
-        assert hostname == self.get_access_api_hostname()
+        assert hostname == await self.get_access_api_hostname()
 
     async def open_preferred_workorders_list(self):
         try:
@@ -130,8 +133,14 @@ class PuppeteerPanel(iPanelAsync):
             try:
                 presets = json.loads(presets)
             except Exception:
+                print(f'Failed JSON conversion of string')
                 try:
-                    presets = eval(presets)
+                    if '[' in presets and ']' in presets:
+                        print(f'Trying to use eval to convert string to list')
+                        presets = eval(presets)
+                    else:
+                        print('Just nesting string in list')
+                        presets = [presets]
                 except Exception as e:
                     raise e
         for preset in presets:
@@ -300,4 +309,82 @@ class PuppeteerPanel(iPanelAsync):
             print(f'Unable to deselect due to {e}')
 
     async def edit_event_by_event_title(self, category: str, title: str):
+        print(f'Expanding Category {category}')
         await self.expand_event_category(category)
+        try:
+            print(f'Waiting for {title} to be visible')
+            await self.library_ctx.get_async_keyword_group('WaitingKeywords').wait_until_element_is_visible(
+                self.metadataQcEventCategory + f"[testinfo='{category}'] [testtag='qc-event'][testinfo='{title}']", timeout=5)
+            print(f'Clicking on {title}')
+            await self.library_ctx.get_async_keyword_group('ElementKeywords').click_element(
+                self.metadataQcEventCategory + f"[testinfo='{category}'] [testtag='qc-event'][testinfo='{title}'] .fa-edit")
+
+            await self.library_ctx.get_async_keyword_group('WaitingKeywords').wait_until_element_is_visible(
+                self.metadataQcEventFormSave, timeout=5)
+        except Exception as e:
+            print(f'Unable to edit due to {e}')
+            raise
+        sleep(.5)
+
+    async def select_event_by_list_index(self, category: str, index: int):
+        await self.expand_event_category(category)
+
+        if not 'selected' in await self.library_ctx.get_async_keyword_group('JavascriptKeywords').execute_javascript(
+            f"document.querySelector(\"[testtag='qc-category'][testinfo='{category}']\").querySelector(\"[testtag='qc-event']\")[{index}].className"):
+            try:
+                await self.library_ctx.get_async_keyword_group('JavascriptKeywords').execute_javascript(
+                    f"document.querySelector(\"[testtag='qc-category'][testinfo='{category}']\").querySelector(\"[testtag='qc-event']\")[{index}].querySelector(\"[testtag='qc-event-select']\").click()")
+            except:
+                pass
+
+    async def deselect_event_by_list_index(self, category: str, index: int):
+        await self.expand_event_category(category)
+
+        if 'selected' in await self.library_ctx.get_async_keyword_group('JavascriptKeywords').execute_javascript(
+            f"document.querySelector(\"[testtag='qc-category'][testinfo='{category}']\").querySelector(\"[testtag='qc-event']\")[{index}].className"):
+            try:
+                await self.library_ctx.get_async_keyword_group('JavascriptKeywords').execute_javascript(
+                    f"document.querySelector(\"[testtag='qc-category'][testinfo='{category}']\").querySelector(\"[testtag='qc-event']\")[{index}].querySelector(\"[testtag='qc-event-select']\").click()")
+            except:
+                pass
+
+    async def edit_event_by_list_index(self, category: str, index: int):
+        await self.expand_event_category(category)
+        try:
+            await self.library_ctx.get_async_keyword_group('JavascriptKeywords').execute_javascript(
+                f"document.querySelector(\"[testtag='qc-category'][testinfo='{category}']\").querySelector(\"[testtag='qc-event']\")[{index}].querySelector(\".fa-edit\").click()")
+
+            await self.library_ctx.get_async_keyword_group('WaitingKeywords').wait_until_element_is_visible(
+                self.metadataQcEventFormSave, timeout=5)
+        except Exception as e:
+            print(f'Unable to edit due to {e}')
+            raise
+        sleep(.5)
+
+    async def save_event_edits(self):
+        try:
+            await self.library_ctx.get_async_keyword_group('ElementKeywords').click_element(self.metadataQcEventFormSave)
+        except Exception as e:
+            print(f'Unable to save due to {e}')
+            raise
+
+    async def cancel_event_edits(self):
+        try:
+            await self.library_ctx.get_async_keyword_group('ElementKeywords').click_element(self.metadataQcEventFormCancel)
+        except Exception as e:
+            print(f'Unable to cancel due to {e}')
+            raise
+
+    async def click_boolean_form_element(self, formkey: str):
+        try:
+            await self.library_ctx.get_async_keyword_group('ElementKeywords').click_element(self.metadataQcEventFormField+f"[testinfo='{formkey}'] [testtag='event-form-input'] .mat-checkbox-frame")
+        except Exception as e:
+            print(f'Unable to click due to {e}')
+            raise
+
+    async def input_text_form_element(self, formkey: str, textstring: str):
+        try:
+            await self.library_ctx.get_async_keyword_group('ElementKeywords').click_element(self.metadataQcEventFormField+f"[testinfo='{formkey}']", textstring)
+        except Exception as e:
+            print(f'Unable to input due to {e}')
+            raise

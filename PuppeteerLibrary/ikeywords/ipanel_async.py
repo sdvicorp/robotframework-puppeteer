@@ -143,3 +143,35 @@ class iPanelAsync(BaseAsyncKeywords, ABC):
     @abstractmethod
     async def deselect_event_by_event_title(self, category: str, title: str):
         pass
+
+    @abstractmethod
+    async def edit_event_by_event_title(self, category: str, title: str):
+        pass
+
+    @abstractmethod
+    async def select_event_by_list_index(self, category: str, index: int):
+        pass
+
+    @abstractmethod
+    async def deselect_event_by_list_index(self, category: str, index: int):
+        pass
+
+    @abstractmethod
+    async def edit_event_by_list_index(self, category: str, index: int):
+        pass
+
+    @abstractmethod
+    async def save_event_edits(self):
+        pass
+
+    @abstractmethod
+    async def cancel_event_edits(self):
+        pass
+
+    @abstractmethod
+    async def click_boolean_form_element(self, formkey:str):
+        pass
+
+    @abstractmethod
+    async def input_text_form_element(self, formkey:str, textstring: str):
+        pass

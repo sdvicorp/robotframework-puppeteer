@@ -77,9 +77,11 @@ class PuppeteerContext(iLibraryContext):
         return False
 
     async def connect_server(self, target, options: dict=None):
-        launchOpts = {
-            'browserWSEndpoint': target
-        }
+        if options:
+            launchOpts = options.copy()
+            launchOpts.update({'browserWSEndpoint': target})
+        else:
+            launchOpts = {'browserWSEndpoint': target}
         self.browser = await connect(launchOpts)
         client = self.browser._connection
         await client.send('Console.enable')

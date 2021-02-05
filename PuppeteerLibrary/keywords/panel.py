@@ -178,3 +178,35 @@ class PanelKeywords(LibraryComponent):
     @keyword
     def deselect_event_by_event_title(self, category, title):
         self.loop.run_until_complete(self.get_async_keyword_group().deselect_event_by_event_title(category, title))
+
+    @keyword
+    def edit_event_by_event_title(self, category, title):
+        self.loop.run_until_complete(self.get_async_keyword_group().edit_event_by_event_title(category, title))
+
+    @keyword
+    def select_event_by_list_index(self, category, index):
+        self.loop.run_until_complete(self.get_async_keyword_group().select_event_by_list_index(category, index))
+
+    @keyword
+    def deselect_event_by_list_index(self, category, index):
+        self.loop.run_until_complete(self.get_async_keyword_group().deselect_event_by_list_index(category, index))
+
+    @keyword
+    def edit_event_by_list_index(self, category, index):
+        self.loop.run_until_complete(self.get_async_keyword_group().edit_event_by_list_index(category, index))
+
+    @keyword
+    def save_event_edits(self):
+        self.loop.run_until_complete(self.get_async_keyword_group().save_event_edits())
+
+    @keyword
+    def cancel_event_edits(self):
+        self.loop.run_until_complete(self.get_async_keyword_group().cancel_event_edits())
+
+    @keyword
+    def click_boolean_form_element(self, formkey):
+        self.loop.run_until_complete(self.get_async_keyword_group().click_boolean_form_element(formkey))
+
+    @keyword
+    def input_text_form_element(self, formkey, textstring):
+        self.loop.run_until_complete(self.get_async_keyword_group().input_text_form_element(formkey, textstring))

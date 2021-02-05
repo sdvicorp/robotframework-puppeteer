@@ -60,9 +60,10 @@ class ScreenshotKeywords(LibraryComponent):
         Depending on Robot's log structure is a bit risky.
         
         """
+        outputpath = BuiltIn().get_variable_value("${OUTPUT_DIR}", self.log_dir)
         self.info('</td></tr><tr><td colspan="3">'
                   '<a href="{src}"><img src="{src}" width="{width}px"></a>'
-                  .format(src=get_link_path(path, self.log_dir), width=width), html=True)
+                  .format(src=get_link_path(path, outputpath), width=width), html=True)
 
 class _SafeFormatter(dict):
 
