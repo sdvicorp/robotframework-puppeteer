@@ -27,8 +27,8 @@ class PuppeteerPanel(iPanelAsync):
     workordersMyTasksButton = "css:[testtag='workorder-mytasks-button']"
     workordersMyGroupTasksButton = "css:[testtag='workorder-mygrouptasks-button']"
     workordersAllUnassignedTasksButton = "css:[testtag='workorder-unassignedtasks-button']"
-    workordersTableTask = "css:[testtag='workorders-table-task']"
-    workordersTableJob = "css:[testtag='workorders-table-job']"
+    workordersTableTask = "css:[testtag='workorder-table-task']"
+    workordersTableJob = "css:[testtag='workorder-table-job']"
 
     metadataQcEventCategory = "css:[testtag='qc-category']"
     metadataQcEventFormSave = "css:[testtag='event-form-save']"
